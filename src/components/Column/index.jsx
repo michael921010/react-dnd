@@ -7,19 +7,18 @@ import Card from "@/components/Card";
 const Column = ({ tasks: { title, tasks }, columnIndex, onMoveMyTask }) => {
   const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: ItemTypes.CARD,
-      drop: item => {
+    drop: (item) => {
       const from = item;
       const to = { columnIndex };
       onMoveMyTask(from, to);
     },
-    canDrop: item => item.columnIndex !== columnIndex,
-    collect: monitor => ({
+    canDrop: (item) => item.columnIndex !== columnIndex,
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
-    })
-  }))
+      canDrop: monitor.canDrop(),
+    }),
+  }));
 
-  
   const cards = tasks.map((task, index) => {
     const propsToDraggbleCard = { task, columnIndex, index };
     return (
@@ -30,12 +29,10 @@ const Column = ({ tasks: { title, tasks }, columnIndex, onMoveMyTask }) => {
     );
   });
 
-  
-
   return (
     <div ref={dropRef} className="column">
       <p className="column__title">{title}</p>
-      
+
       <div className="column__cards">
         {cards}
         {isOver && canDrop ? <Card empty /> : ""}

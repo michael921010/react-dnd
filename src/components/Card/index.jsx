@@ -1,4 +1,3 @@
-
 import "./Card.scss";
 
 const Card = ({ task, empty }) => {
