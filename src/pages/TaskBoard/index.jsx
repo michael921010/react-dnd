@@ -1,8 +1,9 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback,  } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import "./TaskBoard.scss";
 import Column from "@/components/Column";
+import DragLayer from '@/components/DragLayer'
 
 const TaskBoard = ({tasks}) => {
   const [myTasks, moveMyTask] = useState(tasks);
@@ -32,6 +33,7 @@ const TaskBoard = ({tasks}) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+        <DragLayer />
         <div className="task-board">{columns}</div>
     </DndProvider>
   );

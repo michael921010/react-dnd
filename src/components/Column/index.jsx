@@ -1,18 +1,22 @@
-import { useMemo } from "react";
 import "./Column.scss";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "@/configs/drag-items";
 import DraggableCard from "@/components/DraggableCard";
+import Card from "@/components/Card";
 
 const Column = ({ tasks: { title, tasks }, columnIndex, onMoveMyTask }) => {
-  const [{}, dropRef] = useDrop(() => ({
+  const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: ItemTypes.CARD,
       drop: item => {
       const from = item;
       const to = { columnIndex };
       onMoveMyTask(from, to);
     },
-    canDrop: item => item.columnIndex !== columnIndex
+    canDrop: item => item.columnIndex !== columnIndex,
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop()
+    })
   }))
 
   
@@ -31,7 +35,12 @@ const Column = ({ tasks: { title, tasks }, columnIndex, onMoveMyTask }) => {
   return (
     <div ref={dropRef} className="column">
       <p className="column__title">{title}</p>
-      <div className="column__cards">{cards}</div>
+      
+      <div className="column__cards">
+        {cards}
+        {isOver && canDrop ? <Card empty /> : ""}
+      </div>
+
       <div className="column__add-task-input">
         <textarea type="text" placeholder="Type task here ..." />
         <button className="column__add-task-btn">Add Task</button>
